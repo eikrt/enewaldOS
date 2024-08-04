@@ -1,0 +1,3 @@
+-- CLIENT_X.LUA
+-- System configuration
+-- Defines a system thoroughly
