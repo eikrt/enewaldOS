@@ -3,20 +3,20 @@
 function version()
   return "2.12"
 end
-function fetch()
-  {
-    url = "mirror://gnu/hello/hello-" .. version() .. ".tar.gz";
-    sha256 = "sha256-jZkUKv2SV28wsM18tCqNxoCZmLxdYH2Idh9RLibH2yA=";
-  };
+function fetch(mirror)
+  return {
+    url = mirror .. "/gnu/hello/hello-" .. version() .. ".tar.gz",
+    sha256 = "sha256-jZkUKv2SV28wsM18tCqNxoCZmLxdYH2Idh9RLibH2yA=",
+  }
 end
 function pre_install()
-  return "make configure"
+  return "configure"
 end
 function post_install()
   return "echo \"done\""
 end
-function build()
-  return "make ."
+function install()
+  return "make install"
 end
 function meta()
   return {
