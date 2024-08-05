@@ -1,3 +1,3 @@
 # ENEWALD
 
-head for [my website](https://eikrt.github.io/enewald) for thorough documentation.
+Head to [my website](https://eikrt.github.io/enewald) for thorough documentation.
