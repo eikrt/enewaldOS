@@ -1,5 +1,3 @@
-require("metadata")
-
 local PACKAGES_LOCAL = "/home/eino/repo/enewald/enewald/packages.local/"
 local STORE_LOCATION = "/home/eino/repo/enewald/enewald/estore/"
 
@@ -28,13 +26,11 @@ function compile_and_install(pkg, meta) -- TODO: build-system like in guix
   print("Creating directory in estore...")
   os.execute("mkdir " .. store_path)
   print("Done")
-  print("Creating symlinks...")
-  os.execute("ln -s " .. PACKAGES_LOCAL .. pkg_path .. "/" .. pkg .. " " .. store_path .. pkg)
-  print("Done")
   return bin_path
 end
 
-function fetch_pkg_with_meta(pkg, meta)
+function fetch_src_with_meta(pkg, meta)
+  require("current.metadata")
   os.execute("wget " .. fetch("https://www.nic.funet.fi/pub/gnu/ftp.gnu.org/pub/")["url"] .. " -O " .. PACKAGES_LOCAL .. pkg .. "-" .. meta["version"])
   os.execute("tar " .. "-xf" .. PACKAGES_LOCAL .. pkg .. "-" .. meta["version"] .. " -C" .. PACKAGES_LOCAL)
 end
@@ -42,6 +38,6 @@ end
 function resolve(pkg, meta)
   print("Resolving package...")
   print("Resolving package " .. pkg .. " with version " .. meta["version"] .. " with USE-flags " .. meta["use"])
-  fetch_pkg_with_meta(pkg,meta)
+  fetch_src_with_meta(pkg,meta)
   compile_and_install(pkg,meta)
 end

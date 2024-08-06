@@ -1,1 +1,0 @@
-/home/eino/repo/enewald/enewald/client/configuration/client_0.lua
