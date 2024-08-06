@@ -14,7 +14,7 @@ function compose_profile(pkgs)
   for key,value in pairs(pkgs()) do
     print(key,value)
     fetch_metadata(key,value)
-   profile[#profile+1] = resolve(key,value)
+    profile[#profile+1] = resolve(key,value)
   end
   return profile
 end
