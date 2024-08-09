@@ -1,46 +1,49 @@
 -- CLIENT_X.LUA
 -- System configuration
 -- Defines a system thoroughly
+local configuration = {}
 
-function users()
+function configuration.users()
   return {
     admin = "",
     user = "",
   }
 end
 
-function boot()
+function configuration.boot()
   return {
 
   }
 end
 
-function packages()
+function configuration.packages()
   return {
     hello = {version = "2.12", use = "*"}
   }
 end
 
-function services()
+function configuration.services()
   return {
 
   }
 end
 
-function ssh_keys()
+function configuration.ssh_keys()
   return {
 
   }
 end
 
-function network()
+function configuration.network()
   return {
 
   }
 end
 
-function hardware()
+function configuration.hardware()
   return {
 
   }
 end
+
+return configuration
