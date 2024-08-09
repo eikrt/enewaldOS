@@ -1,12 +1,12 @@
 local PACKAGES_LOCAL = "/home/eino/repo/enewald/enewald/packages.local/"
 local STORE_LOCATION = "/home/eino/repo/enewald/enewald/estore/"
-
-function file_exists(name)
+compiler_resolver = {}
+compiler_resolver.file_exists = function(name)
   local f = io.open(name, "r")
   return f ~= nil and io.close(f)
 end
 
-function compile_and_install(pkg, meta) -- TODO: build-system like in guix
+compiler_resolver.compile_and_install = function(pkg, meta) -- TODO: build-system like in guix
   local cd_prefix = "cd " .. PACKAGES_LOCAL .. pkg .. "-" .. meta["version"] .. "; "
   local pkg_path = pkg .. "-" .. meta["version"]
   local store_path = STORE_LOCATION .. pkg_path .. "-" .. "xxxx/"
@@ -29,15 +29,17 @@ function compile_and_install(pkg, meta) -- TODO: build-system like in guix
   return bin_path
 end
 
-function fetch_src_with_meta(pkg, meta)
+compiler_resolver.fetch_src_with_meta = function(pkg, meta)
   require("current.metadata")
   os.execute("wget " .. fetch("https://www.nic.funet.fi/pub/gnu/ftp.gnu.org/pub/")["url"] .. " -O " .. PACKAGES_LOCAL .. pkg .. "-" .. meta["version"])
   os.execute("tar " .. "-xf" .. PACKAGES_LOCAL .. pkg .. "-" .. meta["version"] .. " -C" .. PACKAGES_LOCAL)
 end
 
-function resolve(pkg, meta)
+compiler_resolver.resolve = function(pkg, meta)
   print("Resolving package...")
   print("Resolving package " .. pkg .. " with version " .. meta["version"] .. " with USE-flags " .. meta["use"])
   fetch_src_with_meta(pkg,meta)
-  compile_and_install(pkg,meta)
+  return compile_and_install(pkg,meta)
 end
+
+return compiler_resolver
