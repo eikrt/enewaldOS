@@ -1,8 +1,8 @@
 package.path = package.path .. ";../utils/?.lua"
-utils = require("utils")
-local PACKAGES_LOCAL = "/home/eino/repo/enewald/enewaldOS/rhine/packages.local/"
-local STORE_LOCATION = "/home/eino/repo/enewald/enewaldOS/rhine/estore/"
-compiler_resolver = {}
+local utils = require("utils")
+local compiler_resolver = {}
+PACKAGES_LOCAL = os.getenv("PACKAGES_LOCAL")
+STORE_LOCATION = os.getenv("STORE_LOCATION")
 
 compiler_resolver.compile_and_install = function(pkg, meta) -- TODO: build-system like in guix
 	local cd_prefix = "cd " .. PACKAGES_LOCAL .. pkg .. "-" .. meta["version"] .. "; "
