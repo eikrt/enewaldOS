@@ -1,15 +1,17 @@
 package.path = package.path .. ";../utils/?.lua"
-local sub = require("mqtt.subscribe")
 local pub = require("mqtt.publish")
 local utils = require("utils")
 local handler = require("mqtt.mqtt_handler")
+
+URI = os.getenv("URI")
+ID = os.getenv("ID")
 math.randomseed(os.time())
 local pub_config = pub.new({
-	uri = "localhost:8000",
-	username = "client_0",
-	id = tostring(math.random(0, 1000)),
-	topic = "client/client_0",
-	payload = utils.open_conf("configuration/client_0.lua"),
+	uri = URI,
+	username = "client_" .. ID,
+	id = ID,
+	topic = "client/client_" .. ID,
+	payload = utils.open_conf("configuration/client_" .. ID .. ".lua"),
 	callback = {},
 })
 -- client.lua

@@ -6,10 +6,11 @@ STORE_LOCATION = os.getenv("STORE_LOCATION")
 
 compiler_resolver.compile_and_install = function(pkg, meta) -- TODO: build-system like in guix
 	local cd_prefix = "cd " .. PACKAGES_LOCAL .. pkg .. "-" .. meta["version"] .. "; "
-	local pkg_path = pkg .. "-" .. meta["version"] .. "-" .. "xxxx/"
+	local hash = utils.hash(pkg .. "-" .. meta["version"])
+	local pkg_path = pkg .. "-" .. meta["version"] .. "-" .. hash
 	local store_path = STORE_LOCATION .. pkg_path
 	local packages_location = PACKAGES_LOCAL .. pkg .. "-" .. meta["version"]
-	local bin_path = store_path .. pkg
+	local bin_path = store_path .. "/" .. pkg
 	if utils.file_exists(bin_path) then
 		print("Binary exists, exiting...")
 		return bin_path
@@ -23,6 +24,7 @@ compiler_resolver.compile_and_install = function(pkg, meta) -- TODO: build-syste
 	print("Postinstalling...")
 	os.execute(cd_prefix .. post_install())
 	print("Creating directory in estore...")
+	print(store_path)
 	os.execute("mkdir " .. store_path)
 	os.execute("ln -s " .. packages_location .. "/" .. pkg .. " " .. bin_path)
 	print("Done")
