@@ -1,0 +1,37 @@
+name: Compress Directories
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  compress:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up the directory structure
+        run: |
+          mkdir -p releases
+
+      - name: Run the compression script
+        run: |
+          chmod +x build.sh
+          ./build.sh
+
+      - name: Move tarballs to releases folder
+        run: |
+          mv output/*.tar.gz releases/
+      
+      - name: List files in releases folder
+        run: ls -la releases
+
+      - name: Upload the tarballs as artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: compressed-directories
+          path: releases/*.tar.gz
