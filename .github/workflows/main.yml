@@ -1,4 +1,4 @@
-ame: Compress Directories
+name: Compress Directories
 
 on:
   push:
