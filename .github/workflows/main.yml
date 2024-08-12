@@ -30,8 +30,14 @@ jobs:
       - name: List files in releases folder
         run: ls -la releases
 
-      - name: Upload the tarballs as artifacts
+      - name: Upload nothung artifact
         uses: actions/upload-artifact@v3
         with:
-          name: compressed-directories
-          path: releases/*.tar.gz
+          name: nothung-tarball
+          path: releases/nothung.tar.gz
+
+      - name: Upload rhine artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: rhine-tarball
+          path: releases/rhine.tar.gz
