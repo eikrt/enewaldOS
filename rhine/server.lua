@@ -1,4 +1,5 @@
 package.path = package.path .. ";../utils/?.lua"
+local utils = require("utils")
 local handler = require("mqtt.mqtt_handler")
 local sub = require("mqtt.subscribe")
 local sender = require("ssh.send")
@@ -8,13 +9,16 @@ local ID = os.getenv("ID")
 local URI = os.getenv("URI")
 local pub_dump = sender.new()
 local server = {}
-local callback = function()
-	local config = require("clients.client_0")
-	local profile = {}
+local callback = function(payload)
+  utils.store_string_to_file("current/config.lua", payload)
+	local config = require("current.config")
 	for p, m in pairs(config.packages()) do
-		profile[#profile + 1] = compiler_resolver.resolve(p, m)
+		compiler_resolver.resolve(p, m, config)
 	end
-	pub_dump.send(STORE_LOCATION, "localhost", "eino", "/home/eino/repo/enewald/enewaldOS/nothung/")
+  compiler_resolver.create_profile(config)
+  local profile_location = STORE_LOCATION .. "/" .. "profile_" .. config.metadata().id
+  local profile = require("current.profile")
+	pub_dump.send(profile_location, profile.targets["target_" .. config.metadata().id].host, profile.targets["target_" .. config.metadata().id].username, config.metadata().estore_location)
 end
 local sub_config = sub.new({
 	uri = URI,

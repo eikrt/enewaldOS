@@ -1,0 +1,1 @@
+local profile={} profile.targets={ target_0= { username = "eino", host = "localhost" } } return profile

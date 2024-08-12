@@ -3,10 +3,17 @@
 -- Defines a system thoroughly
 local configuration = {}
 
+function configuration.metadata()
+  return {
+    id = 0,
+    estore_location = "/home/eino/repo/enewald/enewaldOS/nothung/estore/",
+  }
+end
+
 function configuration.users()
   return {
-    admin = "",
-    user = "",
+    admin = "admin",
+    user = "eino",
   }
 end
 
