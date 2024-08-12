@@ -1,1 +1,1 @@
-local profile={} profile.targets={ user1 = { username = "eino", host = "localhost" } } return profile
+local profile={} profile.targets={ target_0= { username = "eino", host = "localhost" } } return profile

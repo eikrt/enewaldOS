@@ -9,14 +9,9 @@ function fetch(mirror)
     sha256 = "sha256-jZkUKv2SV28wsM18tCqNxoCZmLxdYH2Idh9RLibH2yA=",
   }
 end
-function pre_install()
-  return "configure"
-end
-function post_install()
-  return "echo \"done\""
-end
-function install()
-  return "make install"
+
+function build_system()
+  return "gnu"
 end
 function meta()
   return {

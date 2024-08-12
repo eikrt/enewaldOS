@@ -1,23 +1,21 @@
 -- METADATA.LUA
 local metadata = {}
+
 function metadata.version()
 	return "2.12"
 end
+
 function metadata.fetch(mirror)
 	return {
 		url = mirror .. "/gnu/hello/hello-" .. metadata.version() .. ".tar.gz",
 		sha256 = "sha256-jZkUKv2SV28wsM18tCqNxoCZmLxdYH2Idh9RLibH2yA=",
 	}
 end
-function metadata.pre_install()
-	return "configure"
+
+function metadata.build_system()
+  return "gnu"
 end
-function metadata.post_install()
-	return 'echo "done"'
-end
-function metadata.install()
-	return "make install"
-end
+
 function metadata.meta()
 	return {
 		description = "A program that produces a familiar, friendly greeting",

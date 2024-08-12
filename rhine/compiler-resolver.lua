@@ -1,4 +1,5 @@
 package.path = package.path .. ";../utils/?.lua"
+local build_system = require("build_system.build_system")
 local utils = require("utils")
 local compiler_resolver = {}
 PACKAGES_LOCAL = os.getenv("PACKAGES_LOCAL")
@@ -17,25 +18,26 @@ compiler_resolver.create_guide = function(pkg, meta)
   print("Done.")
 end
 
-compiler_resolver.compile_and_install = function(pkg, meta, config) -- TODO: build-system like in guix
+compiler_resolver.compile_and_install = function(pkg, meta, config)
 	local cd_prefix = "cd " .. PACKAGES_LOCAL .. pkg .. "-" .. meta["version"] .. "; "
 	local hash = utils.hash(pkg .. "-" .. meta["version"])
 	local pkg_path = pkg .. "-" .. meta["version"] .. "-" .. hash
 	local store_path = STORE_LOCATION .. "/profile_" .. config.metadata().id .. "/" .. pkg_path
 	local packages_location = PACKAGES_LOCAL .. pkg .. "-" .. meta["version"]
 	local bin_path = store_path .. "/" .. pkg
+  local bsystem = build_system.select(metad.build_system())
 	if utils.file_exists(bin_path) then
 		print("Binary exists, exiting...")
 		return bin_path
 	end
 	print("Preinstalling...")
-	os.execute(cd_prefix .. PACKAGES_LOCAL .. pkg_path .. "/" .. metad.pre_install())
+	os.execute(cd_prefix .. bsystem().pre_install())
 	print("Done")
 	print("Installing...")
-	os.execute(cd_prefix .. metad.install())
+	os.execute(cd_prefix .. bsystem().install())
 	print("Done")
 	print("Postinstalling...")
-	os.execute(cd_prefix .. metad.post_install())
+	os.execute(cd_prefix .. bsystem().post_install())
 	print("Creating directory in estore...")
 	print(store_path)
 	os.execute("mkdir -p " .. store_path)
