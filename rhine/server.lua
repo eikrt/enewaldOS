@@ -7,6 +7,7 @@ local compiler_resolver = require("compiler-resolver")
 local STORE_LOCATION = os.getenv("STORE_LOCATION")
 local ID = os.getenv("ID")
 local URI = os.getenv("URI")
+local IS_REMOTE = os.getenv("IS_REMOTE")
 local pub_dump = sender.new()
 local server = {}
 local callback = function(payload)
@@ -18,7 +19,12 @@ local callback = function(payload)
   compiler_resolver.create_profile(config)
   local profile_location = STORE_LOCATION .. "/" .. "profile_" .. config.metadata().id
   local profile = require("current.profile")
-	pub_dump.send(profile_location, profile.targets["target_" .. config.metadata().id].host, profile.targets["target_" .. config.metadata().id].username, config.metadata().estore_location)
+  if IS_REMOTE == "true" then
+    pub_dump.send_remote(profile_location, profile.targets["target_" .. config.metadata().id].host, profile.targets["target_" .. config.metadata().id].username, config.metadata().estore_location)
+    else if IS_REMOTE == "false" then
+        pub_dump.send_local(profile_location, config.metadata().estore_location)
+    end
+    end
 end
 local sub_config = sub.new({
 	uri = URI,
